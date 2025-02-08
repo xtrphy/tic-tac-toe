@@ -1,3 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+body {
+  font-family: 'Rubik', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .board {
   display: grid;
   grid-template-columns: repeat(3, 100px);
@@ -8,12 +28,13 @@
 .cell {
   width: 100px;
   height: 100px;
-  font-size: 24px;
+  font-size: 4rem;
   text-align: center;
   line-height: 100px;
   border: 1px solid black;
   cursor: pointer;
   background-color: #f0f0f0;
+  transition: 0.1s ease;
 }
 
 .cell:hover {
@@ -21,12 +42,12 @@
 }
 
 .turn {
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 1.5rem;
+  margin: 20px 0;
 }
 
 .winner {
-  font-size: 20px;
+  font-size: 2rem;
   color: green;
-  margin-top: 10px;
+  margin-top: 20px;
 }

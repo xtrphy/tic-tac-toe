@@ -170,7 +170,7 @@ function ScreenController() {
 
       setTimeout(() => {
         resetGame();
-      }, 2000);
+      }, 2500);
 
       return;
     }
