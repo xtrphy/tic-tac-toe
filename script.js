@@ -1,40 +1,42 @@
-function Gameboard() {
-  const rows = 3;
-  const columns = 3;
-  const board = [];
+class Gameboard {
+  constructor() {
+    this.rows = 3;
+    this.columns = 3;
+    this.board = [];
 
-  for (let i = 0; i < rows; i++) {
-    board[i] = [];
-    for (let j = 0; j < columns; j++) {
-      board[i][j] = Cell();
+    for (let i = 0; i < this.rows; i++) {
+      this.board[i] = [];
+      for (let j = 0; j < this.columns; j++) {
+        this.board[i][j] = new Cell();
+      }
     }
   }
 
-  const getBoard = () => board;
+  getBoard() {
+    return this.board;
+  }
 
-  const placeToken = (row, column, player) => {
-    if (board[row][column].getValue() !== 0) {
+  placeToken(row, column, player) {
+    if (this.board[row][column].getValue() !== 0) {
       console.log("Cell is already taken!");
       return false;
     }
-    board[row][column].addToken(player);
+    this.board[row][column].addToken(player);
     return true;
   };
-
-  return { getBoard, placeToken };
 }
 
 
-function Cell() {
-  let value = 0;
+class Cell {
+  #value = 0;
 
-  const addToken = (player) => {
-    value = player;
+  addToken(player) {
+    this.#value = player;
   };
 
-  const getValue = () => value;
-
-  return { addToken, getValue };
+  getValue() {
+    return this.#value;
+  }
 }
 
 
@@ -84,42 +86,50 @@ function checkWinner(board) {
 }
 
 
-function GameController(playerOneName = "Player One", playerTwoName = "Player Two") {
-  const board = Gameboard();
-  const players = [
-    { name: playerOneName, token: 1 },
-    { name: playerTwoName, token: 2 },
-  ];
+class GameController {
+  #board;
+  #players;
+  #activePlayer;
 
-  let activePlayer = players[0];
+  constructor(playerOneName = "Player One", playerTwoName = "Player Two") {
+    this.#board = new Gameboard();
+    this.#players = [
+      { name: playerOneName, token: 1 },
+      { name: playerTwoName, token: 2 },
+    ];
 
-  const switchPlayerTurn = () => {
-    activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    this.#activePlayer = this.#players[0];
+  }
+
+  #switchPlayerTurn() {
+    this.#activePlayer = this.#activePlayer === this.#players[0] ? this.#players[1] : this.#players[0];
   };
 
-  const playRound = (row, column) => {
-    const success = board.placeToken(row, column, activePlayer.token);
+  playRound(row, column) {
+    const success = this.#board.placeToken(row, column, this.#activePlayer.token);
     if (!success) {
       return;
     }
 
-    const winner = checkWinner(board.getBoard());
+    const winner = checkWinner(this.#board.getBoard());
     if (winner) {
       return winner;
     }
 
-    switchPlayerTurn();
+    this.#switchPlayerTurn();
   };
 
-  const getActivePlayer = () => activePlayer;
-  const getBoard = () => board.getBoard();
-
-  return { playRound, getActivePlayer, getBoard };
+  getActivePlayer() {
+    return this.#activePlayer;
+  }
+  getBoard() {
+    return this.#board.getBoard();
+  }
 }
 
 
 function ScreenController() {
-  let game = GameController("Player 1", "Player 2");
+  let game = new GameController("Player 1", "Player 2");
   const playerTurnDiv = document.querySelector(".turn");
   const boardDiv = document.querySelector(".board");
   const winnerDiv = document.querySelector(".winner");
@@ -144,7 +154,7 @@ function ScreenController() {
   };
 
   const resetGame = () => {
-    game = GameController("Player 1", "Player 2");
+    game = new GameController("Player 1", "Player 2");
     winnerDiv.textContent = "";
     boardDiv.addEventListener("click", clickHandlerBoard);
     updateScreen();
